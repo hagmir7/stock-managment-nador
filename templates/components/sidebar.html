@@ -1,0 +1,95 @@
+<ul class="list-unstyled components">
+    <li class="active">
+        <a href="/">
+            <i class="fas fa-home"></i>
+            Accueil
+        </a>
+    </li>
+
+
+    <li>
+        <a href="#product" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fa fa-boxes"></i>
+            Produit
+        </a>
+        <ul class="collapse list-unstyled" id="product">
+            <li>
+                <a href="/product/create"><i class="fas fa-plus"></i> &#xa0; Nouveau Produit</a>
+            </li>
+            <li>
+                <a href="/product/list"><i class="fas fa-list"></i> &#xa0; Liste des produit</a>
+            </li>
+            <li>
+                <a href="/stock/print"><i class="bi bi-printer"></i> &#xa0; Imprimer le stock</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="#order" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fa fa-cart-plus"></i>
+            Les factur
+        </a>
+        <ul class="collapse list-unstyled" id="order">
+            <li>
+                <a href="/client/list"><i class="fas fa-plus"></i> &#xa0; Nouveau Factur</a>
+            </li>
+            <li>
+                <a href="/order/list"><i class="fas fa-list"></i> &#xa0; List des factur</a>
+            </li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="#clinets" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fa fa-users"></i>
+            Client
+        </a>
+        <ul class="collapse list-unstyled" id="clinets">
+            <li>
+                <a href="/client/create"><i class="fas fa-plus"></i> &#xa0; Nouveau Client</a>
+            </li>
+            <li>
+                <a href="/client/list"><i class="fas fa-list"></i> &#xa0; Liste des Client</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+
+
+        <li>
+            <a href="#cheque" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="fa fa-money-check"></i>
+                Cheque
+            </a>
+            <ul class="collapse list-unstyled" id="cheque">
+                <li>
+                    <a href="/all/cheque">Liste des Chèques</a>
+                </li>
+                <li>
+                    <a href="/payment/valid">Chèques non tirés</a>
+                </li>
+                <li>
+                    <a href="/payment/old">Chèques expirés</a>
+                </li>
+                <li>
+                    <a href="/current/cheque">Les chèques doivent être tirés</a>
+                </li>
+            </ul>
+        </li>
+
+    <li>
+        <a href="#admins" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <i class="fa fa-user"></i>
+            Admins
+        </a>
+        <ul class="collapse list-unstyled" id="admins">
+            <li>
+                <a href="/accounts/register">Ajouter admin</a>
+            </li>
+            <li>
+                <a href="/admins">Liste des admins</a>
+            </li>
+        </ul>
+    </li>
+
+</ul>

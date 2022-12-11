@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="main-body">
+        
+        <div class="row gutters-sm d-flex justify-content-center">
+
+            <div class="col-md-10">
+                <div class="d-flex justify-content-between my-2">
+                    <a href="/client/factur/{{client.id}}">Les facture ({{orders.count}})</a> 
+                    <a href="/payment/list/{{client.id}}">Les Paiements ({{payments.count}})</a>
+                    <a href="/order/create/{{client.id}}">+ Nouveau facture </a>
+                    <a href="/payment/create/{{client.id}}">+ Nouveau Paiements </a>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Nom et prénom</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{client}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">E-mail</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{client.email}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Téléphoner</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{client.phone}}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Adresse</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{client.address}}
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-info " href="/client/update/{{client.id}}">Éditer</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-10">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h2 class="h5 mb-4">Résultat Paiements</h2>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Facturation totale</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{client.order_total}}   &#xa0; DH
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Le montant payé</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{client.paymetn_total}}   &#xa0; DH
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Le reste</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                {{client.payment}}   &#xa0; DH
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock content %}

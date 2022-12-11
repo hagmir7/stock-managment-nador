@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 card py-3">
+        <h1 class="h4">+ Nouveau order</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="id_client">Client:</label>
+            <select name="client" required="" class="form-select" id="id_client">
+                <option value="" selected="">----- Client ----</option>
+                {% for client in clients %}
+                <option value="{{client.id}}">{{client}}</option>
+                {% endfor %}
+            </select>
+
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-info my-2 w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Ajouter un produit
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/order-item/create">
+                                <label for="product">Product</label>
+                                <select name="product" id="product" class="form-select">
+                                    {% for product in products %}
+                                    <option value="{{product.id}}">{{product.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="quantity" class="mt-2">Quantity</label>
+                                <input type="number" name="quantity" id="quantity" class="from-control">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <label for="id_product">Product:</label>
+            <select name="product" required="" id="id_product" class="form-select" multiple="">
+                {% for product in products %}
+                <option value="{{product.id}}">{{product.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="id_total">Total:</label>
+            <input type="number" name="total" class="form-control" required="" id="id_total">
+            <button class="btn btn-success w-100 mt-2">Créer </button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

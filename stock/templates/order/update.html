@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-12 card py-3">
+        {% if messages %}
+        {% for message in messages %}
+        <div {% if message.tags %} class="alert p-2 my-1 alert-{{ message.tags }}" {% endif %}>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <h1 class="h4">Nouveau factur</h1>
+            {% csrf_token %}
+
+            <p>Client : <strong>{{order.client}}</strong></p>
+            <button type="button" class="btn btn-success my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="bi bi-plus"></i> Ajouter un produit
+            </button>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Désignation</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Prix</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.product.all %}
+                    <tr>
+                        <th scope="row">{{ item.product.code }}</th>
+                        <td>{{item.product.name}} </td>
+                        <td>{{item.quantity}} </td>
+                        {% if item.pirce %}
+                        <td>{{item.price}} DH</td>
+                        {% else %}
+                        <td>{{item.product.price}} DH</td>
+                        {% endif %}
+                        
+                        <td>{{item.total}} DH</td>
+                        <td>
+                            <a href="/order/item/update/{{item.id}}/{{order.id}}" class="btn btn-sm btn-success"><i class="bi bi-pen"></i></a>
+
+                            <a href="/order-item/delete/{{item.id}}/{{order.id}}"
+                                onclick="return confirm('Êtes-vous sûr de vouloir supprimer Produit')"
+                                class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <h3 class="p-5 text-center">No order</h3>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+            <p class="text-black">Total <strong>{{order.total}} DH</strong></p>
+
+            <a href="/factur/{{order.id}}" class="btn btn-info w-100 mt-2"><i class="bi bi-printer"></i> </a>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Ajouter un produit</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/order-item/create/{{order.id}}" method="POST">
+                    {% csrf_token %}
+                    <label for="product">Produit</label>
+                    <select name="product" id="product" class="form-select" required>
+                        <option value="">---- Produits ----</option>
+                        {% for product in products %}
+                        <option value="{{product.id}}">{{product.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="quantity" class="mt-2">Quantité</label>
+                    <input type="number" name="quantity" id="quantity" required class="form-control">
+
+                    <label for="price" class="mt-2">Nouveau prix</label>
+                    <input type="number" name="price" id="price" class="form-control">
+                    <button type="submit" class="btn btn-primary mt-3 w-100">Ajouter</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

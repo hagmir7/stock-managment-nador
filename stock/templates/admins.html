@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="h4 mb-2">Liste des administrateurs</h1>
+{% if messages %}
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert p-2 my-1 alert-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </div>
+    {% endfor %}
+{% endif %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+          <th scope="col">Code</th>
+          <th scope="col">Nom et prénom</th>
+          <th scope="col">Email</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users  %}
+        <tr>
+            <th scope="row">{{ user.id }}</th>
+            <td>{{user.first_name}} {{user.last_name}}</td>
+            <td>{{user.email}}</td>
+            <td>
+                <a href="user/delete/{{user.id}}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer admin')" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+        {% empty %}
+        {% endfor %}
+
+      </tbody>
+  </table>
+
+{% endblock content %}

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-blue order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Commands</h6>
+                    <h2 class="text-right"><i class="fa fa-cart-plus f-left"></i><span>{{ orders.count}}</span></h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-green order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Produit</h6>
+                    <h2 class="text-right"><i class="fa fa-boxes f-left"></i><span>{{ products.count}}</span></h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-yellow order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Clinets</h6>
+                    <h2 class="text-right"><i class="fa fa-users f-left"></i><span>{{clients.count}}</span></h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 col-xl-3">
+            <div class="card bg-c-pink order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Admins</h6>
+                    <h2 class="text-right"><i class="fa fa-user f-left"></i><span>{{users.count}}</span></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    {% if messages %}
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert p-2 my-1 alert-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </div>
+    {% endfor %}
+{% endif %}
+<h1 class="h4">Les chèques doivent être tirés</h1>
+<table class="table table-striped">
+      {% if payments %}
+      <thead>
+        <tr>
+          <th scope="col">Code</th>
+          <th scope="col">Client</th>
+          <th scope="col">Montant</th>
+          <th scope="col">Date de livraison</th>
+          <th scope="col">Date de retrait</th>
+          <th scope="col">Payé</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% endif %}
+        {% for payment in payments  %}
+        <tr>
+            <th scope="row">{{ payment.id }}</th>
+            <td><a href="/client/{{payment.client.id}}">{{payment.client}}</a> </td>
+            <td>{{payment.montant}} DH</td>
+            <td>{{payment.date|date:"d - m - Y" }}</td>
+            <td>{{payment.cheque_date|date:"d - m - Y" }}</td>
+            <td>{% if payment.paid %} <span class="text-success"><i class="bi bi-check-lg fs-4"></i></span> {% else %} <span class="text-gray"><i class="bi bi-alarm"></i></span> {% endif %}</td>
+
+            <td>
+                <a href="/payment/delete/{{payment.id}}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer payment')" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                <a href="/payment/update/{{payment.id}}/{{payment.client.id}}" class="btn btn-sm btn-success"><i class="bi bi-pen"></i></a>
+            </td>
+          </tr>
+        {% empty %}
+        <h3 class="p-5 text-center">No Cheque</h3>
+        {% endfor %}
+
+      </tbody>
+  </table>
+  <div class="pagination">
+    <span class="step-links w-100 text-center">
+        {% if payments.has_previous %}
+            <!-- <a href="?page=1">&laquo; first</a> -->
+            <a class="btn btn-info rounded-pill btn-sm w-25" href="?page={{ payments.previous_page_number }}">←</a>
+        {% endif %}
+        {% if payments.has_next %}
+            <a class="btn btn-info rounded-pill btn-sm w-25" href="?page={{ payments.next_page_number }}">→</a>
+            <!-- <a href="?page={{ payments.paginator.num_pages }}">last &raquo;</a> -->
+        {% endif %}
+    </span>
+</div>
+</div>
+{% endblock content %}

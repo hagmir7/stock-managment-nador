@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert p-2 my-1 alert-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </div>
+    {% endfor %}
+{% endif %}
+<h4>La liste des produits en stock</h1>
+<div class="row mb-2">
+<div class="col-md-6">
+  <a href="/product/create" class="btn btn-info">+ Nouveau produit</a>
+  <a href="/stock/print" class="btn btn-success"><i class="bi bi-printer"></i></a>
+</div>
+<div class="col-md-6 ">
+  <form action="/product/list" method="POST" class="d-flex">
+    {% csrf_token %}
+    <input type="search" name="search" class="form-control rounded-pill" value="{{query}}" placeholder="Chercher..." id="search"> 
+    <input type="submit" value="Chercher" class="btn btn-success rounded-pill mx-2">
+  </form>
+</div>
+</div>
+<table class="table table-striped">
+      {% if products %}
+      <thead>
+        <tr>
+          
+          <th scope="col">Référence</th>
+          <th scope="col">Désignation</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Colis</th>
+          <th scope="col">Prix</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% endif %}
+        {% for product in products  %}
+        <tr>
+            
+            <th scope="row">{% if product.code %} {{ product.code }} {% else %} -- {% endif %}</th>
+            <td>{{product.name}} </td>
+            <td>{{product.stock}} </td>
+            <th scope="row">{% if product.colis %} {{ product.colis }} {% else %} -- {% endif %}</th>
+            <td>{{product.price}} DH</td>
+            <td>
+              <a href="/product/update/{{product.id}}" class="btn btn-sm btn-success"><i class="bi bi-pencil-square"></i></a>
+                <a href="/product/delete/{{product.id}}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer product')" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+        {% empty %}
+        <h3 class="p-5 text-center">No product</h3>
+        {% endfor %}
+
+      </tbody>
+  </table>
+  <div class="pagination">
+    <span class="step-links w-100 text-center">
+        {% if products.has_previous %}
+            <!-- <a href="?page=1">&laquo; first</a> -->
+            <a class="btn btn-info rounded-pill btn-sm w-25" href="?page={{ products.previous_page_number }}">←</a>
+        {% endif %}
+        {% if products.has_next %}
+            <a class="btn btn-info rounded-pill btn-sm w-25" href="?page={{ products.next_page_number }}">→</a>
+            <!-- <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a> -->
+        {% endif %}
+    </span>
+</div>
+
+
+{% endblock content %}

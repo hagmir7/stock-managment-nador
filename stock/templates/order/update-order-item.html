@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container ">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6 ">
+            {% if messages %}
+            {% for message in messages %}
+            <div {% if message.tags %} class="alert p-2 my-1 alert-{{ message.tags }}" {% endif %}>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            <h4>Modifier les produits de facture</h4>
+            <form method="POST">
+                {% csrf_token %}
+                <label for="product">Product</label>
+                <select name="product" id="product" class="form-select">
+                    {% for product in products %}
+                    {% if product.id == item.product.id %}
+                    <option value="{{product.id}}" selected>{{product.name}}</option>
+                    {% else %}
+                    <option value="{{product.id}}">{{product.name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <label for="quantity" class="mt-2">Quantity</label>
+                <input class="form-control" type="number" value="{{item.quantity}}" name="quantity" id="quantity">
+                <input type="submit" value="Éditer" class="w-100 mt-2 btn btn-success">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

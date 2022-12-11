@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<script>
+
+    function cheque(e) {
+        const type = document.getElementById('type')
+        if (type.value == 'Cheque') {
+            document.getElementById('cheque-content').classList.remove('d-none')
+        } else {
+            document.getElementById('cheque-content').classList.add('d-none')
+        }
+
+    }
+
+</script>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 card py-3">
+        <h1 class="h4">Nouveau Payment <br>
+            <p><small> Client : {{client}}</small></p>
+        </h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label class="mt-3 m-0" for="id_type">Type:</label>
+            <select name="type" onchange="cheque()" id="type" required class="form-select">
+                <option value="">--- Sélectionner Type ---</option>
+                <option value="Cach">Cach</option>
+                <option value="Cheque">Chèque</option>
+            </select>
+            <label class="mt-3 m-0" for="id_montant">Montant:</label>
+            <input class="form-control" type="number" name="montant" required id="id_montant">
+            <label class="mt-3 m-0" for="id_date">Date:</label>
+            <input class="form-control" type="date" name="date" required id="id_date">
+            <div class="d-none mt-2" id="cheque-content">
+                <label class="mt-3 m-0" for="id_cheque_date">Chèque date:</label>
+                <input class="form-control" type="date" name="cheque_date" id="id_cheque_date">
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox"payé id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Payé
+                    </label>
+                </div>
+            </div>
+            <button class="btn btn-success w-100 mt-2">Créer</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert p-2 my-1 alert-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </div>
+    {% endfor %}
+{% endif %}
+<h1 class="h4">Les chèques doivent être tirés</h1>
+<div class="row mb-2">
+<div class="col-md-6">
+  <!-- <a href="/payment/create" class="btn btn-info">+ Nouveau payment</a> -->
+</div>
+<div class="col-md-6 ">
+  <form method="POST" class="d-flex">
+    {% csrf_token %}
+    <input type="search" name="search" class="form-control rounded-pill" value="{{query}}" placeholder="Chercher..." id="search"> 
+    <input type="submit" value="Chercher" class="btn btn-success rounded-pill mx-2">
+  </form>
+</div>
+</div>
+<table class="table table-striped">
+      {% if payments %}
+      <thead>
+        <tr>
+          <th scope="col">Code</th>
+          <th scope="col">Client</th>
+          <th scope="col">Montant</th>
+          <th scope="col">Date de livraison</th>
+          <th scope="col">Date de retrait</th>
+          <th scope="col">Payé</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% endif %}
+        {% for payment in payments  %}
+        <tr>
+            <th scope="row">{{ payment.id }}</th>
+            <td><a href="/client/{{payment.client.id}} ">{{payment.client}} </a></td>
+            <td>{{payment.montant}} DH</td>
+            <td>{{payment.date|date:"d-m-Y" }}</td>
+            <td>{{payment.cheque_date|date:"d-m-Y" }}</td>
+            <td>{% if payment.paid %} <span class="text-success"><i class="bi bi-check-lg fs-4"></i></span> {% else %} <span class="text-gray"><i class="bi bi-alarm"></i></span> {% endif %}</td>
+            <td>
+                <a href="/payment/delete/{{payment.id}}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer payment')" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                <a href="/payment/update/{{payment.id}}/{{payment.client.id}}" class="btn btn-sm btn-success"><i class="bi bi-pen"></i></a>
+            </td>
+          </tr>
+        {% empty %}
+        <h3 class="p-5 text-center">No Cheque</h3>
+        {% endfor %}
+
+      </tbody>
+  </table>
+  <div class="pagination">
+    <span class="step-links w-100 text-center">
+        {% if payments.has_previous %}
+            <!-- <a href="?page=1">&laquo; first</a> -->
+            <a class="btn btn-info rounded-pill btn-sm w-25" href="?page={{ payments.previous_page_number }}">←</a>
+        {% endif %}
+        {% if payments.has_next %}
+            <a class="btn btn-info rounded-pill btn-sm w-25" href="?page={{ payments.next_page_number }}">→</a>
+            <!-- <a href="?page={{ payments.paginator.num_pages }}">last &raquo;</a> -->
+        {% endif %}
+    </span>
+</div>
+
+
+{% endblock content %}

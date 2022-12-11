@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert p-2 my-1 alert-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </div>
+    {% endfor %}
+{% endif %}
+<h1 class="h4">La liste des factures</h1>
+<div class="row mb-2">
+<div class="col-md-6"><a href="/client/list" class="btn btn-info">+ Nouveau Factur</a></div>
+<div class="col-md-6 ">
+  <form method="POST" class="d-flex">
+    {% csrf_token %}
+    <input type="search" name="search" class="form-control rounded-pill" value="{{query}}" placeholder="Chercher..." id="search"> 
+    <input type="submit" value="Chercher" class="btn btn-success rounded-pill mx-2">
+  </form>
+</div>
+</div>
+<table class="table table-striped">
+      {% if orders %}
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Client</th>
+          <th scope="col">NB Produits</th>
+          <th scope="col">Total</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% endif %}
+        {% for order in orders  %}
+        {% if order.product.count > 0 %}
+        <tr>
+            <th scope="row">{{ order.id }}</th>
+            <td>{{order.client}} </td>
+            <td>{{order.product.count}} </td>
+            <td>{{order.total}} DH</td>
+            <td>
+                <a href="/order/delete/{{order.id}}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer order')" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                <a href="/order/update/{{order.id}}" class="btn btn-sm btn-success"><i class="bi bi-eye"></i></a>
+                <a href="/factur/{{order.id}}" class="btn btn-sm btn-info"><i class="bi bi-printer"></i></a>
+            </td>
+          </tr>
+          {% endif %}
+        {% empty %}
+        <h3 class="p-5 text-center">No factures</h3>
+        {% endfor %}
+
+      </tbody>
+  </table>
+  <div class="pagination">
+    <span class="step-links w-100 text-center">
+        {% if orders.has_previous %}
+            <a class="btn btn-info rounded-pill btn-sm w-25" href="?page={{ orders.previous_page_number }}">←</a>
+        {% endif %}
+        {% if orders.has_next %}
+            <a class="btn btn-info rounded-pill btn-sm w-25" href="?page={{ orders.next_page_number }}">→</a>
+        {% endif %}
+    </span>
+</div>
+
+
+{% endblock content %}

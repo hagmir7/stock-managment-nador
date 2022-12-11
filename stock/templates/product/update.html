@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 card py-3">
+        <h1 class="h4">Éditer produit ({{product.name}})</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="code">Code: </label>
+                <input type="text" name="code" id="id_code" value="{{product.code}}" class="form-control">
+                <label for="id_name">La désignation:</label>
+                <input class="form-control" value="{{product.name}}"  type="text" name="name" maxlength="500" required="" id="id_name">
+                <label for="id_image">Image:</label>
+                <input class="form-control" type="file" name="image" accept="image/*" id="id_image">
+                {% if product.image %}
+                <a class="mt-2" href="{{product.image.url}}">{{product.image.url}}</a><br><br>
+                {% endif %}
+                <label for="id_price">Prix:</label>
+                <input class="form-control" value="{{product.price}}" type="number" name="price" step="any" required="" id="id_price">
+                <label for="id_stock">Stock:</label>
+                <input class="form-control" value="{{product.stock}}" type="number" name="stock" required id="id_stock">
+                <label for="id_colis">Colis:</label>
+                <input class="form-control" type="number" name="colis" value="{{product.colis}}" id="id_colis">
+                <button class="btn btn-success w-100 mt-2">Éditer</button>
+            </form>
+        </form>
+    </div>
+</div>
+{% endblock content %}
